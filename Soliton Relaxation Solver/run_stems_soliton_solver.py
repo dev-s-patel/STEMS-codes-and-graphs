@@ -24,7 +24,7 @@ def ode_system(x, y):
     
     return np.vstack((dF, -B / A))
 
-# 3. Boundary Conditions: F(0) = 2*pi, F(r_max) = 0
+# 3. Boundary Conditions (Original PDF Match)
 def boundary_conditions(ya, yb):
     return np.array([ya[0] - 2.0 * np.pi, yb[0] - 0.0])
 
@@ -49,29 +49,31 @@ rho_tot = rho_2 + rho_4
 
 print(f"rho_E(0): {rho_tot[0]:.4f}")
 
-# 6. Visualization Pipeline
+# 6. Visualization Pipeline (Exact Match with PDF Page 32/33)
 plt.figure(figsize=(10, 4.2))
 
+# Left Panel: Profile Convergence
 plt.subplot(1, 2, 1)
-plt.plot(r_eval, F_sol, 'b-', lw=2, label=r'$F(r)$ Profile')
-plt.axhline(2*np.pi, color='gray', ls='--', alpha=0.6)
-plt.axhline(0, color='black', ls=':', alpha=0.6)
-plt.xlabel(r'Radius $r/\sqrt{\alpha_4}$')
-plt.ylabel(r'Chiral Angle $F(r)$')
+plt.plot(r_eval, F_sol, 'b-', lw=2, label=r'Numerical Profile $F(r)$')
+plt.axhline(2*np.pi, color='gray', ls='--', alpha=0.6, label=r'$F(0) = 2\pi$')
+plt.axhline(0, color='black', ls=':', alpha=0.6, label=r'$F(\infty) = 0$')
+plt.xlabel(r'Normalized Radius $r/\sqrt{\alpha_4}$')
+plt.ylabel(r'Chiral Angle $F(r)$ [rad]')
 plt.title('Hedgehog Profile Convergence')
 plt.grid(True, alpha=0.3)
-plt.legend()
+plt.legend(loc='upper right')
 
+# Right Panel: Energy Density Decay
 plt.subplot(1, 2, 2)
 plt.plot(r_eval, rho_tot, 'r-', lw=2, label=r'Total $\rho_E(r)$')
 plt.plot(r_eval, rho_2, 'g--', lw=1.2, label=r'$\mathbb{T}$')
 plt.plot(r_eval, rho_4, 'm-.', lw=1.2, label=r'$\mathbb{T}_{\rm axial}$')
-plt.xlabel(r'Radius $r/\sqrt{\alpha_4}$')
+plt.xlabel(r'Normalized Radius $r/\sqrt{\alpha_4}$')
 plt.ylabel(r'Energy Density $\rho_E(r)$')
 plt.title(r'Finite Core Density ($\rho_0 \approx 0.2912$)')
 plt.yscale('log')
 plt.grid(True, alpha=0.3)
-plt.legend()
+plt.legend(loc='upper right')
 
 plt.tight_layout()
 plt.savefig('STEMS_Soliton_Convergence.png', dpi=300)
